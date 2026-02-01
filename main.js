@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const base = 220;
         const hue = ((Math.log2(frequency / base) * 360) % 360 + 360) % 360;
 
-        const brightness = 35 + Math.min(30, (frequency - 220) / 800 * 30);
-
         document.documentElement.style.transition = "background-color 80ms linear";
-        document.documentElement.style.backgroundColor = `hsl(${hue}, 70%, ${brightness}%)`;
+        document.documentElement.style.backgroundColor = `hsl(${hue}, 100%, 70%`;
 
     }
 
