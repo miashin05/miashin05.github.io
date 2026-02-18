@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             currentGain.cancelScheduledValues(currentTime);
             const startVal = Math.max(0.0001, currentGain.value);
             currentGain.setValueAtTime(startVal, currentTime);
-            currentGain.exponentialRampToValueAtTime(targetGain, currentTime + 0.02)
+            currentGain.exponentialRampToValueAtTime(targetGain, currentTime + 0.06)
 
         }
 
@@ -105,12 +105,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
             gainNode.gain.cancelScheduledValues(currentTime);    
             gainNode.gain.setValueAtTime(Math.max(gainNode.gain.value, 0.0001), currentTime);      
 
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.03);
 
-            osc.stop(currentTime + 0.02);
+            osc.stop(currentTime + 0.04);
             
-            delete activeOscillators[key];
-            updateKeyGains();
+            osc.onended = () => {
+                delete activeOscillators[key];
+                updateKeyGains();
+            };
         }
     }
     
