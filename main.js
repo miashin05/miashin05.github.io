@@ -71,14 +71,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const keysPlayed = Math.max(1, keys.length);
     
         if (newKey && activeOscillators[newKey]) {
-            const currentGain = activeOscillators[newKey].gainNode.gain;
-            const currentTime = audioCtx.currentTime;
+            const gainParam = activeOscillators[newKey].gainNode.gain;
+            const now = audioCtx.currentTime;
     
             const targetGain = Math.min(0.9 / keysPlayed, 0.3);
     
             gainParam.cancelScheduledValues(now);
             gainParam.setValueAtTime(0.0001, now);
-            gainParam.exponentialRampToValueAtTime(targetGain, currentTime + 0.02);
+            gainParam.exponentialRampToValueAtTime(targetGain, now + 0.02);
         }
     
         updateBackground();
