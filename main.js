@@ -70,14 +70,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const currentTime = audioCtx.currentTime;
         const keys = Object.keys(activeOscillators);
         const keysPlayed = Math.max(1, keys.length);
-        const targetGain = (1.0 / keysPlayed) * 0.9;
+        const targetGain = 1.0 / keysPlayed;
 
         for (const k of keys){
             const currentGain = activeOscillators[k].gainNode.gain;
             currentGain.cancelScheduledValues(currentTime);
-            const startVal = Math.max(0.0001, currentGain.value);
-            currentGain.setValueAtTime(startVal, currentTime);
-            currentGain.exponentialRampToValueAtTime(targetGain, currentTime + 0.06)
+            currentGain.setTargetAtTime(targetGain, currentTime, 0.001);
 
         }
 
@@ -105,14 +103,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
             gainNode.gain.cancelScheduledValues(currentTime);    
             gainNode.gain.setValueAtTime(Math.max(gainNode.gain.value, 0.0001), currentTime);      
 
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.03);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.02);
 
-            osc.stop(currentTime + 0.04);
+            osc.stop(currentTime + 0.02);
             
-            osc.onended = () => {
-                delete activeOscillators[key];
-                updateKeyGains();
-            };
+            delete activeOscillators[key];
+            updateKeyGains();
         }
     }
     
@@ -138,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         osc.connect(gainNode);
         gainNode.connect(globalGain);
 
-        osc.start(currentTime);
+        osc.start();
         activeOscillators[key] = {osc, gainNode}
 
         updateKeyGains();
