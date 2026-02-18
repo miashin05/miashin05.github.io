@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         for (const k of keys){
             const currentGain = activeOscillators[k].gainNode.gain;
             currentGain.cancelScheduledValues(currentTime);
-            currentGain.setTargetAtTime(targetGain, currentTime, 0.02);
+            currentGain.setTargetAtTime(targetGain, currentTime, 0.05);
 
         }
 
@@ -98,9 +98,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             gainNode.gain.cancelScheduledValues(currentTime);    
             gainNode.gain.setValueAtTime(Math.max(gainNode.gain.value, 0.0001), currentTime);      
 
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + 0.05);
 
-            osc.stop(currentTime + 0.02);
+            osc.stop(currentTime + 0.05);
 
             delete activeOscillators[key];
             updateKeyGains();
