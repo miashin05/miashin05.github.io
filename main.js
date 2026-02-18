@@ -66,21 +66,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
 
-    function updateKeyGains(){
-        const currentTime = audioCtx.currentTime;
+    function updateKeyGains(newKey = null){
         const keys = Object.keys(activeOscillators);
         const keysPlayed = Math.max(1, keys.length);
-        const targetGain = 1.0 / keysPlayed;
-
-        for (const k of keys){
-            const currentGain = activeOscillators[k].gainNode.gain;
-            currentGain.cancelScheduledValues(currentTime);
-            currentGain.setTargetAtTime(targetGain, currentTime, 0.001);
-
+    
+        if (newKey && activeOscillators[newKey]) {
+            const currentGain = activeOscillators[newKey].gainNode.gain;
+            const currentTime = audioCtx.currentTime;
+    
+            const targetGain = Math.min(0.9 / keysPlayed, 0.3);
+    
+            gainParam.cancelScheduledValues(now);
+            gainParam.setValueAtTime(0.0001, now);
+            gainParam.exponentialRampToValueAtTime(targetGain, currentTime + 0.02);
         }
-
+    
         updateBackground();
-
     }
 
     
@@ -137,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         osc.start();
         activeOscillators[key] = {osc, gainNode}
 
-        updateKeyGains();
+        updateKeyGains(key);
 
       }
 
